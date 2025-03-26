@@ -1,0 +1,68 @@
+<div class="container w-75 mx-auto mt-4">
+
+    <p class="text-center fw-bold fs-5">Cadastro de professores</p>
+  
+    <form class="row g-3" [formGroup]="professorForm">
+      <div class="col-12">
+        <label for="inputName" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="inputName" required formControlName="nome" placeholder="Digite o nome do professor">
+      </div>
+  
+      <div class="col-12">
+        <label for="inputEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail" required formControlName="email" placeholder="Digite o Email do professor">
+      </div>
+  
+      <div class="col-12">
+        <label for="inputEspecialidade" class="form-label">Especialidade</label>
+        <input type="text" class="form-control" id="inputEspecialidade" required formControlName="especialidade" placeholder="Digite a especialidade do professor">
+      </div>
+  
+      <div class="col-12  text-center">
+        <button type="submit" class="btn btn-primary" (click)="salvarProfessor()" [disabled]="!professorForm.valid">Salvar</button>
+      </div>
+    </form>
+  
+  
+    <div class="border rounded p-3 mt-4">
+    <table class="table table-responsive">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">Especialidade</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let professor of professores">
+          <th scope="row">{{ professor.id }}</th>
+          <td>{{ professor.nome }}</td>
+          <td>{{ professor.email }}</td>
+          <td>{{ professor.especialidade }}</td>
+          <td>
+            <button type="button" class="btn btn-primary me-2" (click)="editarProfessor(professor)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="deletarProfessor(professor.id!)">Excluir</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <nav aria-label="Navegação de página">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="paginaAtual === 1">
+          <button class="page-link" (click)="paginaAnterior()">Anterior</button>
+        </li>
+        <li class="page-item">
+          <span class="page-link">{{ paginaAtual }}</span>
+        </li>
+        <li class="page-item">
+          <button class="page-link" (click)="proximaPagina()">Próxima</button>
+        </li>
+      </ul>
+    </nav>
+  
+  </div>
+</div>
+  
