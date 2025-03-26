@@ -29,8 +29,7 @@ export class CursoService {
     return this.http.put<void>(url, curso);
   }
 
-  deletarCurso(id: number): Observable<void> {
-    const url = `${this.urlApi}/${id}`;
-    return this.http.delete<void>(url);
+  ativarOuDesativarCurso(id: number): Observable<void> {
+    return this.http.patch<void>(`${this.urlApi}/${id}`, {});
   }
 }

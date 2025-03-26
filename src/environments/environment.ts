@@ -1,5 +1,5 @@
 export const environment = {
 
-    urlApiLocal :"https://localhost:57345/",
+    urlApiLocal :"https://localhost:58174/",
 
 }

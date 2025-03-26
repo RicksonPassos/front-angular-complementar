@@ -1,56 +1,89 @@
 <div class="container w-75 mx-auto mt-4">
-    <p class="text-center fw-bold fs-5">
-      {{ cursoEditando ? 'Editar Curso' : 'Cadastro de Cursos' }}
-    </p>
-  
-    <form [formGroup]="cursoForm" class="row g-3">
-      <div class="col-12">
-        <label class="form-label">Nome</label>
-        <input formControlName="name" placeholder="Digite o nome do curso" class="form-control" />
-      </div>
-  
-      <div class="col-12">
-        <label class="form-label">Categoria</label>
-        <input formControlName="category" placeholder="Digite a categoria" class="form-control" />
-      </div>
-  
-      <div class="col-12">
-        <label class="form-label">Descrição</label>
-        <textarea formControlName="description" placeholder="Descreva o curso" class="form-control"></textarea>
-      </div>
-  
-      <div class="col-12 d-flex justify-content-center gap-3">
-        <button type="button" class="btn btn-primary" (click)="salvarCurso()" [disabled]="!cursoForm.valid">
-          {{ cursoEditando ? 'Atualizar' : 'Salvar' }}
-        </button>
-        <button *ngIf="cursoEditando" type="button" class="btn btn-secondary" (click)="cancelarEdicao()">
-          Cancelar
-        </button>
-      </div>
-    </form>
-  
-    <div class="border rounded p-3 mt-4">
-      <table class="table table-bordered table-responsive">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Categoria</th>
-            <th>Descrição</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let curso of cursos">
-            <td>{{ curso.name }}</td>
-            <td>{{ curso.category }}</td>
-            <td>{{ curso.description }}</td>
-            <td>
-              <button class="btn btn-primary me-2" (click)="editarCurso(curso)">Editar</button>
-              <button class="btn btn-danger" (click)="deletarCurso(curso.id!)">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <p class="text-center fw-bold fs-5">
+    {{ cursoEditando ? 'Editar Curso' : 'Cadastro de Cursos' }}
+  </p>
+
+  <form [formGroup]="cursoForm" class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Nome</label>
+      <input formControlName="name" placeholder="Digite o nome do curso" class="form-control" />
     </div>
+
+    <div class="col-12">
+      <label class="form-label">Categoria</label>
+      <input formControlName="category" placeholder="Digite a categoria" class="form-control" />
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Descrição</label>
+      <textarea formControlName="description" placeholder="Descreva o curso" class="form-control"></textarea>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label">Professor</label>
+      <select class="form-select" formControlName="professorId">
+        <option value="">Selecione um professor</option>
+        <option *ngFor="let professor of professores" [value]="professor.id">
+          {{ professor.nome }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center gap-3">
+      <button type="button" class="btn btn-primary" (click)="salvarCurso()" [disabled]="!cursoForm.valid">
+        {{ cursoEditando ? 'Atualizar' : 'Salvar' }}
+      </button>
+      <button *ngIf="cursoEditando" type="button" class="btn btn-secondary" (click)="cancelarEdicao()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <div class="border rounded p-3 mt-4">
+    <table class="table table-bordered table-responsive">
+      <thead>
+        <tr class="text-center">
+          <th>Nome do Curso</th>
+          <th>Categoria</th>
+          <th>Descrição</th>
+          <th>Professor</th>
+          <th>Alunos</th>
+          <th>Status</th>
+          <th>Alterar</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let curso of cursos" class="text-center">
+          <td>{{ curso.name }}</td>
+          <td>{{ curso.category }}</td>
+          <td>{{ curso.description }}</td>
+          <td>{{ curso.professor?.nome }}</td>
+          <td>
+            <span *ngIf="curso.alunos && curso.alunos.length > 0; else nenhumAluno">
+              <span *ngFor="let aluno of curso.alunos; let i = index">
+                {{ aluno.nome }}<span *ngIf="i < curso.alunos.length - 1">, </span>
+              </span>
+            </span>
+            <ng-template #nenhumAluno>-</ng-template>
+          </td>
+          <td>
+            <span [class.text-success]="curso.active" [class.text-danger]="!curso.active">
+              {{ curso.active ? 'Ativo' : 'Inativo' }}
+            </span>
+          </td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm"
+              (click)="alternarStatusCurso(curso)">
+              {{ curso.active ? 'Desativar' : 'Ativar' }}
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="editarCurso(curso)">Editar</button>
+          </td>
+        </tr>
+      </tbody>      
+    </table>
   </div>
-  
+</div>
